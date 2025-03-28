@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HeroComponent } from './hero.component';
+import { NavAuthButtonsComponent } from './nav-auth-buttons.component';
 
-describe('HeroComponent', () => {
-  let component: HeroComponent;
-  let fixture: ComponentFixture<HeroComponent>;
+describe('NavAuthButtonsComponent', () => {
+  let component: NavAuthButtonsComponent;
+  let fixture: ComponentFixture<NavAuthButtonsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeroComponent],
+      imports: [NavAuthButtonsComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HeroComponent);
+    fixture = TestBed.createComponent(NavAuthButtonsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

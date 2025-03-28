@@ -1,8 +1,10 @@
 import { Route } from '@angular/router';
-import { HeroComponent } from './pages/hero.component';
-import { LoginComponent } from './pages/login/login.component';
+import { LoginComponent } from './components/auth/login/login.component';
 
+import { LandingpageComponent } from './components/main/landingpage.component';
+
+// path '' ist noch nicht erarbeitet und daher auskommentiert.
 export const appRoutes: Route[] = [
-  { path: '', component: HeroComponent },
+  { path: '', component: LandingpageComponent },
   { path: 'login', component: LoginComponent },
 ];
