@@ -1,12 +1,4 @@
 {
-  "scripts": {
-    "start:api": "nx serve staffing-api",
-    "build:api": "nx build staffing-api",
-    "test:api": "nx test staffing-api",
-    "lint:api": "nx lint staffing-api",
-    "serve:all": "nx run-many --target=serve --all",
-    "build:all": "nx run-many --target=build --all"
-  },
   "devDependencies": {
     "@angular-devkit/build-angular": "~19.2.0",
     "@angular-devkit/core": "~19.2.0",
