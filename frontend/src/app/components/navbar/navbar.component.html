@@ -1,0 +1,41 @@
+<nav class="bg-white border-b border-gray-200 px-6 py-4">
+  <div class="flex items-center justify-between">
+    <!-- Logo -->
+    <div class="flex items-center space-x-2">
+      <h2>Staffing</h2>
+    </div>
+
+    <!-- Navigation Links - Desktop -->
+    <app-nav-links display="desktop"></app-nav-links>
+
+    <!-- Auth Buttons - Desktop -->
+    <app-nav-auth-buttons display="desktop"></app-nav-auth-buttons>
+
+    <!-- Hamburger Button (Mobil) -->
+    <button
+      class="md:hidden focus:outline-none"
+      (click)="toggleMenu()"
+      aria-label="Menü öffnen/schließen"
+    >
+      <svg
+        class="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Menü - Mobil -->
+  @if(mobileMenuOpen) {
+  <div class="md:hidden mt-4">
+    <app-nav-links display="mobile"></app-nav-links>
+    <app-nav-auth-buttons display="mobile"></app-nav-auth-buttons>
+  </div>
+  }
+</nav>
