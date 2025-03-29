@@ -1,1 +1,89 @@
-<p>login works!</p>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+  <div class="w-full max-w-md bg-white p-8 rounded-xl shadow">
+    <h2 class="text-2xl font-bold mb-6 text-center">Anmelden</h2>
+
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <!-- Email -->
+      <div class="mb-4">
+        <label for="email" class="block mb-1 text-sm text-gray-700"
+          >E-Mail</label
+        >
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="form.email"
+          required
+          class="w-full border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <!-- Passwort -->
+      <div class="mb-4 relative">
+        <label for="password" class="block mb-1 text-sm text-gray-700"
+          >Passwort</label
+        >
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          name="password"
+          [(ngModel)]="form.password"
+          required
+          class="w-full border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 pr-10"
+        />
+        <button
+          type="button"
+          (click)="togglePassword()"
+          class="absolute top-8 right-3 text-sm text-blue-600"
+        >
+          {{ showPassword ? 'Verbergen' : 'Anzeigen' }}
+        </button>
+      </div>
+
+      <!-- Remember me -->
+      <div class="mb-4 flex items-center">
+        <input
+          type="checkbox"
+          id="remember"
+          [(ngModel)]="rememberMe"
+          name="remember"
+          class="mr-2"
+        />
+        <label for="remember" class="text-sm text-gray-700"
+          >Mich Erinnern</label
+        >
+      </div>
+
+      <!-- Passwort vergessen -->
+      <p class="text-sm mt-2 text-right">
+        <a href="/forgot-password" class="text-blue-600 hover:underline">
+          Passwort vergessen?
+        </a>
+      </p>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="!loginForm.valid || status === 'loading'"
+        class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+      >
+        {{ status === 'loading' ? 'Einloggen...' : 'Einloggen' }}
+      </button>
+
+      <!-- Register  -->
+      <p class="text-sm mt-4 text-center">
+        Noch kein Konto?
+        <a routerLink="/register" class="text-blue-600 hover:underline"
+          >Jetzt registrieren</a
+        >
+      </p>
+
+      <!-- Feedback -->
+      @if (status === 'success') {
+      <p class="text-green-600 text-sm text-center mt-4">Login erfolgreich!</p>
+      } @if (status === 'error') {
+      <p class="text-red-600 text-sm text-center mt-4">Fehler beim Login.</p>
+      }
+    </form>
+  </div>
+</div>

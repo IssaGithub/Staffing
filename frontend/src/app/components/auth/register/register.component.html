@@ -1,0 +1,100 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+  <div class="w-full max-w-md bg-white p-8 rounded-xl shadow">
+    <h2 class="text-2xl font-bold mb-6 text-center">Registrieren</h2>
+
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <!-- Name -->
+      <div class="mb-4">
+        <label for="name" class="block mb-1 text-sm text-gray-700">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          [(ngModel)]="form.name"
+          required
+          class="w-full border rounded px-3 py-2 text-sm"
+        />
+      </div>
+
+      <!-- E-Mail -->
+      <div class="mb-4">
+        <label for="email" class="block mb-1 text-sm text-gray-700"
+          >E-Mail</label
+        >
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="form.email"
+          required
+          class="w-full border rounded px-3 py-2 text-sm"
+        />
+      </div>
+
+      <!-- Passwort -->
+      <div class="mb-4 relative">
+        <label for="password" class="block mb-1 text-sm text-gray-700"
+          >Passwort</label
+        >
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          name="password"
+          [(ngModel)]="form.password"
+          required
+          class="w-full border rounded px-3 py-2 text-sm pr-10"
+        />
+        <button
+          type="button"
+          (click)="togglePassword()"
+          class="absolute top-8 right-3 text-sm text-blue-600"
+        >
+          {{ showPassword ? 'Verbergen' : 'Anzeigen' }}
+        </button>
+      </div>
+
+      <!-- Passwort bestätigen -->
+      <div class="mb-4">
+        <label for="confirm" class="block mb-1 text-sm text-gray-700"
+          >Passwort bestätigen</label
+        >
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="confirm"
+          name="confirmPassword"
+          [(ngModel)]="form.confirmPassword"
+          required
+          class="w-full border rounded px-3 py-2 text-sm"
+        />
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="!registerForm.valid || status === 'loading'"
+        class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+      >
+        {{ status === 'loading' ? 'Wird gesendet...' : 'Registrieren' }}
+      </button>
+
+      <!-- Feedback -->
+      @if (status === 'success') {
+      <p class="text-green-600 text-sm text-center mt-4">
+        Registrierung erfolgreich!
+      </p>
+      } @if (status === 'error') {
+      <p class="text-red-600 text-sm text-center mt-4">
+        Passwort stimmt nicht überein oder Fehler.
+      </p>
+      }
+
+      <!-- Login-Link -->
+      <p class="text-sm mt-4 text-center">
+        Schon registriert?
+        <a routerLink="/login" class="text-blue-600 hover:underline"
+          >Jetzt einloggen</a
+        >
+      </p>
+    </form>
+  </div>
+</div>
