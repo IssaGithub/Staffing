@@ -1,21 +1,23 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   standalone: true,
   imports: [CommonModule, FormsModule, HttpClientModule],
-  templateUrl: './login.component.html',
+  templateUrl: './register.component.html',
 })
-export class LoginComponent {
+export class RegisterComponent {
   form = {
+    name: '',
     email: '',
     password: '',
+    confirmPassword: '',
   };
-  rememberMe = false;
+
   showPassword = false;
   status: 'idle' | 'loading' | 'success' | 'error' = 'idle';
 
@@ -26,19 +28,23 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    if (!this.form.email || !this.form.password) return;
+    if (
+      !this.form.email ||
+      !this.form.password ||
+      this.form.password !== this.form.confirmPassword
+    ) {
+      this.status = 'error';
+      return;
+    }
+
     this.status = 'loading';
+
     this.http
-      .post<{ token: string }>(
-        'http://localhost:3000/api/auth/login',
-        this.form
-      )
+      .post('http://localhost:3000/api/auth/register', this.form)
       .subscribe({
-        next: (res) => {
-          const storage = this.rememberMe ? localStorage : sessionStorage;
-          storage.setItem('token', res.token);
+        next: () => {
           this.status = 'success';
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/login']);
         },
         error: () => {
           this.status = 'error';
