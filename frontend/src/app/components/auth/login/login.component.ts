@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { login } from '../../../store/user/user.actions';
-import { AppState } from '../../../store';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -23,23 +19,7 @@ export class LoginComponent {
   showPassword = false;
   status: 'idle' | 'loading' | 'success' | 'error' = 'idle';
 
-  isLoading$!: Observable<boolean>;
-  error$!: Observable<any>;
-
-  constructor(private router: Router, private store: Store<AppState>) {
-    this.isLoading$ = this.store.select(state => state.user.isLoading);
-    this.error$ = this.store.select(state => state.user.error);
-    
-    this.isLoading$.subscribe(isLoading => {
-      this.status = isLoading ? 'loading' : this.status === 'loading' ? 'idle' : this.status;
-    });
-
-    this.error$.subscribe(error => {
-      if (error) {
-        this.status = 'error';
-      }
-    });
-  }
+  constructor(private http: HttpClient, private router: Router) {}
 
   togglePassword() {
     this.showPassword = !this.showPassword;
@@ -47,10 +27,22 @@ export class LoginComponent {
 
   onSubmit() {
     if (!this.form.email || !this.form.password) return;
-    
-    this.store.dispatch(login({ 
-      email: this.form.email, 
-      password: this.form.password 
-    }));
+    this.status = 'loading';
+    this.http
+      .post<{ token: string }>(
+        'http://localhost:3000/api/auth/login',
+        this.form
+      )
+      .subscribe({
+        next: (res) => {
+          const storage = this.rememberMe ? localStorage : sessionStorage;
+          storage.setItem('token', res.token);
+          this.status = 'success';
+          this.router.navigate(['/dashboard']);
+        },
+        error: () => {
+          this.status = 'error';
+        },
+      });
   }
 }

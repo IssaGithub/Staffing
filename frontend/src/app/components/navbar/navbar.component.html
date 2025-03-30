@@ -31,8 +31,8 @@
     </button>
   </div>
 
-  <!-- Menü - Mobil - Using async pipe with observable -->
-  @if(mobileMenuOpen$ | async) {
+  <!-- Menü - Mobil -->
+  @if(mobileMenuOpen) {
   <div class="md:hidden mt-4">
     <app-nav-links display="mobile"></app-nav-links>
     <app-nav-auth-buttons display="mobile"></app-nav-auth-buttons>
