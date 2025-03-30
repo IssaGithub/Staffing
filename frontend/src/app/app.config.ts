@@ -4,8 +4,7 @@ import { appRoutes } from './app.routes';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { isDevMode } from '@angular/core';
+import { environment } from '../environments/environment';
 
 import { effects, reducers } from './store';
 
@@ -18,12 +17,6 @@ export const appConfig: ApplicationConfig = {
     provideStore(reducers),
     provideEffects(effects),
     
-    provideStoreDevtools({
-      maxAge: 25,
-      logOnly: !isDevMode(),
-      autoPause: true,
-      trace: false,
-      traceLimit: 75,
-    }),
+    ...environment.providers,
   ],
 };
