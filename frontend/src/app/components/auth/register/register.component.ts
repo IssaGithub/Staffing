@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { register } from '../../../store/user/user.actions';
-import { AppState } from '../../../store';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -25,23 +21,7 @@ export class RegisterComponent {
   showPassword = false;
   status: 'idle' | 'loading' | 'success' | 'error' = 'idle';
 
-  isLoading$!: Observable<boolean>;
-  error$!: Observable<any>;
-
-  constructor(private router: Router, private store: Store<AppState>) {
-    this.isLoading$ = this.store.select(state => state.user.isLoading);
-    this.error$ = this.store.select(state => state.user.error);
-    
-    this.isLoading$.subscribe(isLoading => {
-      this.status = isLoading ? 'loading' : this.status === 'loading' ? 'idle' : this.status;
-    });
-
-    this.error$.subscribe(error => {
-      if (error) {
-        this.status = 'error';
-      }
-    });
-  }
+  constructor(private http: HttpClient, private router: Router) {}
 
   togglePassword() {
     this.showPassword = !this.showPassword;
@@ -57,9 +37,18 @@ export class RegisterComponent {
       return;
     }
 
-    this.store.dispatch(register({
-      email: this.form.email,
-      password: this.form.password
-    }));
+    this.status = 'loading';
+
+    this.http
+      .post('http://localhost:3000/api/auth/register', this.form)
+      .subscribe({
+        next: () => {
+          this.status = 'success';
+          this.router.navigate(['/login']);
+        },
+        error: () => {
+          this.status = 'error';
+        },
+      });
   }
 }
