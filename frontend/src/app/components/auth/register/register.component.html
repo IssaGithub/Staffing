@@ -10,10 +10,16 @@
           type="text"
           id="name"
           name="name"
-          [(ngModel)]="form.name"
+          [(ngModel)]="name"
+          #nameInput="ngModel"
           required
           class="w-full border rounded px-3 py-2 text-sm"
         />
+        @if (nameInput.invalid && (nameInput.dirty || nameInput.touched)) {
+        <small class="text-red-500 text-xs mt-1">
+          Dieses Feld ist erforderlich.
+        </small>
+        }
       </div>
 
       <!-- E-Mail -->
@@ -25,10 +31,22 @@
           type="email"
           id="email"
           name="email"
-          [(ngModel)]="form.email"
+          [(ngModel)]="email"
+          #emailInput="ngModel"
           required
-          class="w-full border rounded px-3 py-2 text-sm"
+          aria-required="true"
+          [attr.aria-invalid]="
+            emailInput.invalid && (emailInput.dirty || emailInput.touched)
+              ? 'true'
+              : 'false'
+          "
+          class="w-full border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
         />
+        @if (emailInput.invalid && (emailInput.dirty || emailInput.touched)) {
+        <small class="text-red-500 text-xs mt-1">
+          Bitte geben Sie eine gültige E-Mail-Adresse ein.
+        </small>
+        }
       </div>
 
       <!-- Passwort -->
@@ -40,17 +58,32 @@
           [type]="showPassword ? 'text' : 'password'"
           id="password"
           name="password"
-          [(ngModel)]="form.password"
+          [(ngModel)]="password"
+          #passwordInput="ngModel"
           required
           class="w-full border rounded px-3 py-2 text-sm pr-10"
         />
         <button
           type="button"
           (click)="togglePassword()"
-          class="absolute top-8 right-3 text-sm text-blue-600"
+          class="absolute top-8 right-3 text-sm text-gray-500 hover:text-gray-700"
+          aria-label="Passwort anzeigen/verbergen"
         >
           {{ showPassword ? 'Verbergen' : 'Anzeigen' }}
         </button>
+
+        @if (passwordInput.invalid && (passwordInput.dirty ||
+        passwordInput.touched)) {
+        <small class="text-red-500 text-xs mt-1">
+          Das Passwort ist erforderlich.
+        </small>
+        } @if (!passwordValid() && password().length > 0) {
+        <small class="text-red-500 text-xs mt-1">
+          Das Passwort muss mindestens 8 Zeichen lang sein, mind. einen
+          Großbuchstaben, einen Kleinbuchstaben und eine Zahl oder ein
+          Sonderzeichen enthalten.
+        </small>
+        }
       </div>
 
       <!-- Passwort bestätigen -->
@@ -62,30 +95,39 @@
           [type]="showPassword ? 'text' : 'password'"
           id="confirm"
           name="confirmPassword"
-          [(ngModel)]="form.confirmPassword"
+          [(ngModel)]="confirmPassword"
+          #confirmPasswordInput="ngModel"
           required
           class="w-full border rounded px-3 py-2 text-sm"
         />
+        @if (confirmPasswordInput.invalid && (confirmPasswordInput.dirty ||
+        confirmPasswordInput.touched)) {
+        <small class="text-red-500 text-xs mt-1">
+          Passwort-Bestätigung ist erforderlich.
+        </small>
+        } @else if (!passwordsMatch() && confirmPassword().length > 0) {
+        <small class="text-red-500 text-xs mt-1">
+          Passwörter stimmen nicht überein.
+        </small>
+        }
       </div>
 
       <!-- Submit Button -->
       <button
         type="submit"
-        [disabled]="!registerForm.valid || status === 'loading'"
-        class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+        [disabled]="buttonIsDisabled()"
+        class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {{ status === 'loading' ? 'Wird gesendet...' : 'Registrieren' }}
+        {{ loading() === true ? 'Wird gesendet...' : 'Registrieren' }}
       </button>
 
       <!-- Feedback -->
-      @if (status === 'success') {
-      <p class="text-green-600 text-sm text-center mt-4">
-        Registrierung erfolgreich!
-      </p>
-      } @if (status === 'error') {
-      <p class="text-red-600 text-sm text-center mt-4">
-        Passwort stimmt nicht überein oder Fehler.
-      </p>
+      @if (error()) {
+      <div
+        class="mt-4 p-2 bg-red-50 border border-red-200 rounded text-red-600 text-sm text-center"
+      >
+        {{ error() }}
+      </div>
       }
 
       <!-- Login-Link -->

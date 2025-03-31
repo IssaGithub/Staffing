@@ -1,15 +1,13 @@
-@if (display() === 'desktop') {
-<ul class="hidden md:flex items-center space-x-6 text-sm text-gray-700">
+<ul
+  [class]="
+    display() === 'desktop'
+      ? 'hidden md:flex items-center space-x-6 text-sm text-gray-700'
+      : 'space-y-2 text-sm text-gray-700'
+  "
+>
   @for (link of links; track link.text) {
   <li>
     <a href="{{ link.url }}" class="hover:text-black">{{ link.text }}</a>
   </li>
   }
 </ul>
-} @else {
-<div class="space-y-2 text-sm text-gray-700">
-  @for (link of links; track link.text) {
-  <a href="{{ link.url }}" class="block hover:text-black">{{ link.text }}</a>
-  }
-</div>
-}
