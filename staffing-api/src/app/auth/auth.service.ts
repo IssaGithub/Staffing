@@ -18,7 +18,9 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async signUp(authCredentialsDTO: AuthCredentialsDTO): Promise<void> {
+  async signUp(
+    authCredentialsDTO: AuthCredentialsDTO
+  ): Promise<{ message: string }> {
     const { email, password } = authCredentialsDTO;
     const salt = await bcryptjs.genSalt();
     const hashedPassword = await bcryptjs.hash(password, salt);
@@ -30,6 +32,7 @@ export class AuthService {
 
     try {
       await newUser.save();
+      return { message: 'User erfolgreich registriert' };
     } catch (error) {
       console.log(error);
       throw new ConflictException(

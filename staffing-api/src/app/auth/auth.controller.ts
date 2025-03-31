@@ -8,7 +8,9 @@ export class AuthController {
 
   //Signup Method
   @Post('/signup')
-  signUp(@Body() AuthCredentialsDTO: AuthCredentialsDTO): Promise<void> {
+  signUp(
+    @Body() AuthCredentialsDTO: AuthCredentialsDTO
+  ): Promise<{ message: string }> {
     return this.authService.signUp(AuthCredentialsDTO);
   }
 
