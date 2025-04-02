@@ -1,0 +1,11 @@
+@if (pdfSrcSignal()) {
+<div class="vorschau-area">
+  <ngx-extended-pdf-viewer
+    [src]="pdfSrcSignal() || ''"
+    [height]="'80vh'"
+    [textLayer]="true"
+    [showHandToolButton]="true"
+  >
+  </ngx-extended-pdf-viewer>
+</div>
+}
